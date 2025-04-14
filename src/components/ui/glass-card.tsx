@@ -1,25 +1,36 @@
 
-import React from "react";
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
-interface GlassCardProps {
+interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  intensity?: "light" | "medium" | "heavy";
   children: React.ReactNode;
-  className?: string;
-  hoverEffect?: boolean;
 }
 
-const GlassCard = ({ children, className, hoverEffect = false }: GlassCardProps) => {
-  return (
-    <div
-      className={cn(
-        "relative rounded-xl backdrop-blur-lg bg-white/10 border border-white/20 shadow-lg",
-        hoverEffect && "transition-all duration-300 hover:bg-white/15 hover:shadow-xl hover:border-white/30",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-};
+const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
+  ({ className, intensity = "medium", children, ...props }, ref) => {
+    const intensityClasses = {
+      light: "bg-white/5 backdrop-blur-sm border-white/10",
+      medium: "bg-white/10 backdrop-blur-lg border-white/20",
+      heavy: "bg-white/20 backdrop-blur-xl border-white/30",
+    };
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "rounded-xl border shadow-lg",
+          intensityClasses[intensity],
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+GlassCard.displayName = "GlassCard";
 
 export default GlassCard;

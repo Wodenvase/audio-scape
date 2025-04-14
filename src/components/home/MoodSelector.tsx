@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useMusic } from "@/context/MusicContext";
 import { tracks } from "@/data/musicData";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Music, Sun, Moon, Heart, Zap, CloudRain 
@@ -66,6 +65,16 @@ const MoodSelector = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const { playTrack } = useMusic();
   const { toast } = useToast();
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const handleMoodSelect = (mood: Mood) => {
     setSelectedMood(mood.id);
@@ -99,15 +108,43 @@ const MoodSelector = () => {
     }, 800);
   };
 
-  // SVG blob paths for each mood button
+  // SVG blob paths for each mood button with more complex morphing shapes
   const blobPaths = {
-    default: "M58.2,-48.2C70.6,-33.4,73.1,-9.4,66.4,10.5C59.7,30.4,43.8,46.3,24.4,55.8C5,65.2,-17.9,68.2,-35.8,59.5C-53.8,50.8,-66.7,30.4,-70.2,9C-73.7,-12.5,-67.7,-35,-53.3,-49.4C-38.9,-63.8,-16,-70.2,3.9,-73.4C23.8,-76.7,45.7,-63,58.2,-48.2Z",
-    hover: "M54.3,-47.8C67.9,-29.9,75,-8,71.5,12.9C68,33.7,54,53.4,35.1,63.3C16.1,73.1,-7.9,73.1,-31.4,65C-54.9,56.9,-77.9,40.8,-83.5,20.3C-89.2,-0.2,-77.5,-25.1,-61.1,-43.2C-44.7,-61.3,-23.4,-72.7,-1.1,-71.8C21.1,-70.9,40.7,-65.8,54.3,-47.8Z",
-    active: "M59.4,-49.2C71.5,-33.1,73,-8.2,67.3,15.2C61.7,38.6,48.9,60.5,29.1,70.7C9.4,80.9,-17.4,79.4,-41.4,68C-65.5,56.6,-86.8,35.3,-91.5,10.9C-96.1,-13.5,-84.2,-41,-65.1,-57.2C-46.1,-73.3,-23,-78.1,0.7,-78.8C24.4,-79.4,47.3,-65.2,59.4,-49.2Z"
+    default: "M59.5,-47.2C72,-33.5,74.1,-8.3,67.3,12.3C60.6,32.9,45,49,26.3,59.7C7.6,70.4,-14.1,75.8,-32.9,67.8C-51.7,59.8,-67.5,38.5,-72,14.7C-76.5,-9.1,-69.8,-35.4,-54.7,-49.8C-39.6,-64.3,-16.1,-66.8,4.2,-70.2C24.5,-73.5,47,-60.8,59.5,-47.2Z",
+    hover: "M50.7,-44.9C65.4,-31.2,77.2,-12.4,75.5,5.6C73.7,23.5,58.4,40.7,40.1,52.5C21.9,64.3,0.6,70.8,-20,66.9C-40.6,63,-60.5,48.8,-68.4,29.7C-76.3,10.6,-72.1,-13.3,-61,-31.7C-49.9,-50.1,-31.9,-63,-12.7,-62.9C6.5,-62.8,36,-58.7,50.7,-44.9Z",
+    active: "M64.3,-53.6C77.8,-35.9,79.5,-9,72.6,13.9C65.7,36.8,50.2,55.7,29.8,66.1C9.4,76.5,-16,78.3,-37.9,68.8C-59.8,59.2,-78.1,38.3,-82.2,14.8C-86.4,-8.8,-76.3,-35,-58.8,-52.8C-41.3,-70.6,-16.3,-79.9,5.5,-83.8C27.4,-87.7,50.7,-71.2,64.3,-53.6Z"
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 relative overflow-hidden">
+      {/* Background blobs that follow mouse position with parallax effect */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <motion.div 
+          className="absolute w-[800px] h-[800px] rounded-full opacity-20 bg-gradient-to-r from-blue-500 to-purple-600 filter blur-3xl"
+          animate={{
+            x: mousePosition.x * 0.02,
+            y: mousePosition.y * 0.02,
+          }}
+          transition={{ type: "spring", damping: 50 }}
+        />
+        <motion.div 
+          className="absolute top-1/4 right-1/3 w-[600px] h-[600px] rounded-full opacity-10 bg-gradient-to-r from-pink-500 to-yellow-500 filter blur-3xl"
+          animate={{
+            x: mousePosition.x * -0.01,
+            y: mousePosition.y * -0.01,
+          }}
+          transition={{ type: "spring", damping: 50 }}
+        />
+        <motion.div 
+          className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] rounded-full opacity-10 bg-gradient-to-r from-green-400 to-cyan-500 filter blur-3xl"
+          animate={{
+            x: mousePosition.x * 0.015,
+            y: mousePosition.y * 0.015,
+          }}
+          transition={{ type: "spring", damping: 50 }}
+        />
+      </div>
+      
       <AnimatePresence>
         {!isTransitioning && (
           <motion.div 
@@ -115,30 +152,54 @@ const MoodSelector = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+            className="text-center mb-12 relative z-10"
           >
-            <Music className="h-16 w-16 mx-auto mb-4 text-primary" />
-            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 260, 
+                damping: 20,
+                delay: 0.2 
+              }}
+            >
+              <Music className="h-16 w-16 mx-auto mb-4 text-primary" />
+            </motion.div>
+            <motion.h1 
+              className="text-3xl md:text-5xl font-bold mb-2 text-white"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
               What's Your Mood?
-            </h1>
-            <p className="text-gray-300 text-lg">
+            </motion.h1>
+            <motion.p 
+              className="text-gray-300 text-lg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
               Choose a vibe and let the music take you away
-            </p>
+            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-2xl">
-        {moods.map((mood) => (
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-2xl relative z-10">
+        {moods.map((mood, index) => (
           <motion.div
             key={mood.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 + index * 0.1 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleMoodSelect(mood)}
             className={`
               relative 
-              h-32 md:h-40
-              rounded-xl 
+              h-36 md:h-44
+              rounded-2xl 
               cursor-pointer
               overflow-hidden
               flex flex-col items-center justify-center
@@ -157,8 +218,7 @@ const MoodSelector = () => {
             >
               <motion.svg 
                 viewBox="0 0 200 200" 
-                className="w-full h-full"
-                style={{ filter: "blur(0px)" }}
+                className="w-full h-full absolute inset-0"
               >
                 <motion.path
                   d={blobPaths.default}
@@ -170,9 +230,11 @@ const MoodSelector = () => {
                   transition={{ 
                     type: "spring", 
                     damping: 10, 
-                    stiffness: 100 
+                    stiffness: 100,
+                    duration: 0.8
                   }}
                   fill={`url(#gradient-${mood.id})`}
+                  className="animate-blob"
                 />
                 <defs>
                   <linearGradient id={`gradient-${mood.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
@@ -183,20 +245,39 @@ const MoodSelector = () => {
               </motion.svg>
             </motion.div>
             
+            {/* Glow effect on hover */}
+            <motion.div 
+              className="absolute inset-0 opacity-0 pointer-events-none"
+              whileHover={{ opacity: 1 }}
+              style={{
+                background: `radial-gradient(circle at center, ${mood.colors[0]}40 0%, transparent 70%)`,
+              }}
+            />
+            
             {/* Icon and text */}
-            <div className="relative z-10 flex flex-col items-center space-y-2">
+            <div className="relative z-10 flex flex-col items-center space-y-3">
               <motion.div 
-                className="p-3 rounded-full bg-white/10 backdrop-blur-sm"
+                className="p-4 rounded-full bg-white/10 backdrop-blur-md"
                 whileHover={{ 
-                  boxShadow: `0 0 20px ${mood.colors[0]}80`
+                  boxShadow: `0 0 30px ${mood.colors[0]}80`,
+                  scale: 1.1,
                 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
               >
                 {mood.icon}
               </motion.div>
-              <span className="text-white font-medium text-sm md:text-base">
+              <span className="text-white font-medium text-lg md:text-xl tracking-wide">
                 {mood.name}
               </span>
             </div>
+            
+            {/* Ripple effect on click */}
+            <motion.div
+              initial={{ scale: 0, x: "-50%", y: "-50%" }}
+              animate={selectedMood === mood.id ? { scale: 3 } : { scale: 0 }}
+              transition={{ duration: 0.8 }}
+              className="absolute left-1/2 top-1/2 w-full aspect-square rounded-full bg-white/20 pointer-events-none"
+            />
           </motion.div>
         ))}
       </div>
