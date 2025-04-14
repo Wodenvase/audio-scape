@@ -77,4 +77,27 @@
   .audio-bar:nth-child(5) {
     animation-delay: 0.8s;
   }
+
+  /* Add transition for visualizer heights */
+  .transition-height {
+    transition-property: height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  /* Pulse animation for visualizer when idle */
+  @keyframes pulse-gentle {
+    0%, 100% { transform: scaleY(0.3); }
+    50% { transform: scaleY(0.5); }
+  }
+
+  /* Wave animation for visualizer */
+  @keyframes wave {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.3); }
+  }
+
+  .pulse-gentle {
+    animation: pulse-gentle 2s ease-in-out infinite;
+  }
 }

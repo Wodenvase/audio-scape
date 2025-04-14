@@ -9,6 +9,7 @@ interface MusicContextType {
   currentTime: number;
   duration: number;
   queue: Track[];
+  audioRef: React.RefObject<HTMLAudioElement>;
   playTrack: (track: Track) => void;
   togglePlayPause: () => void;
   setVolume: (volume: number) => void;
@@ -133,6 +134,7 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
     currentTime,
     duration,
     queue,
+    audioRef,
     playTrack,
     togglePlayPause,
     setVolume,
