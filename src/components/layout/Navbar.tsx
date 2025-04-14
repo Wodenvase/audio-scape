@@ -1,17 +1,19 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Search, User, Bell, Music } from "lucide-react";
+import { Search, Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useMusic } from "@/context/MusicContext";
 import { tracks } from "@/data/musicData";
+import { useToast } from "@/components/ui/use-toast";
 
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { playTrack } = useMusic();
   const location = useLocation();
+  const { toast } = useToast();
   
   const toggleSearch = () => {
     setShowSearch(!showSearch);
@@ -31,6 +33,16 @@ const Navbar = () => {
       
       if (results.length > 0) {
         playTrack(results[0]);
+        toast({
+          title: "Track found!",
+          description: `Now playing "${results[0].title}" by ${results[0].artist}`,
+        });
+      } else {
+        toast({
+          title: "No results found",
+          description: "Try searching for a different song or artist.",
+          variant: "destructive"
+        });
       }
     }
   };
