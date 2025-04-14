@@ -29,10 +29,15 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
   const [duration, setDuration] = useState(0);
   const [queue, setQueue] = useState<Track[]>([]);
   
+  // Create a single audio element ref that persists for the lifetime of the app
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
+  // Initialize audio element only once when the context is created
   useEffect(() => {
-    audioRef.current = new Audio();
+    // Only create the audio element if it doesn't already exist
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+    }
     
     const audio = audioRef.current;
     
@@ -52,6 +57,21 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
   
+  const nextTrack = () => {
+    if (queue.length > 0) {
+      const nextTrack = queue[0];
+      const newQueue = queue.slice(1);
+      setQueue(newQueue);
+      playTrack(nextTrack);
+    } else if (currentTrack) {
+      const currentIndex = tracks.findIndex(t => t.id === currentTrack.id);
+      if (currentIndex < tracks.length - 1) {
+        playTrack(tracks[currentIndex + 1]);
+      }
+    }
+  };
+  
+  // Ensure track changes work with the existing audio element
   useEffect(() => {
     if (!audioRef.current) return;
     
@@ -62,6 +82,7 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [currentTrack]);
   
+  // Handle play/pause state changes
   useEffect(() => {
     if (!audioRef.current) return;
     
@@ -75,6 +96,7 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [isPlaying]);
   
+  // Handle volume changes
   useEffect(() => {
     if (!audioRef.current) return;
     audioRef.current.volume = volume;
@@ -97,20 +119,6 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
     if (audioRef.current) {
       audioRef.current.currentTime = time;
       setCurrentTime(time);
-    }
-  };
-  
-  const nextTrack = () => {
-    if (queue.length > 0) {
-      const nextTrack = queue[0];
-      const newQueue = queue.slice(1);
-      setQueue(newQueue);
-      playTrack(nextTrack);
-    } else if (currentTrack) {
-      const currentIndex = tracks.findIndex(t => t.id === currentTrack.id);
-      if (currentIndex < tracks.length - 1) {
-        playTrack(tracks[currentIndex + 1]);
-      }
     }
   };
   

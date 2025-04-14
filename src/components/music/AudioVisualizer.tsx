@@ -12,38 +12,74 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isPlaying, audioEleme
   const analyserRef = useRef<AnalyserNode | null>(null);
   const dataArrayRef = useRef<Uint8Array | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const isConnectedRef = useRef<boolean>(false);
 
   // Set up audio analyzer when component mounts or audio element changes
   useEffect(() => {
     if (!audioElement) return;
     
-    // Initialize audio context and analyzer if not already done
-    if (!audioContextRef.current) {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const analyser = audioContext.createAnalyser();
-      analyser.fftSize = 64; // Must be a power of 2
-      
-      const source = audioContext.createMediaElementSource(audioElement);
-      source.connect(analyser);
-      analyser.connect(audioContext.destination);
-      
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-      
-      analyserRef.current = analyser;
-      dataArrayRef.current = dataArray;
-      audioContextRef.current = audioContext;
+    // Clean up previous connections
+    if (audioContextRef.current && sourceNodeRef.current && isConnectedRef.current) {
+      sourceNodeRef.current.disconnect();
+      analyserRef.current?.disconnect();
+      isConnectedRef.current = false;
+    }
+    
+    // Only create a new audio context and analyzer if needed
+    if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+      try {
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        analyser.fftSize = 64; // Must be a power of 2
+        
+        // Only create a media element source if we haven't already
+        if (!isConnectedRef.current) {
+          const source = audioContext.createMediaElementSource(audioElement);
+          source.connect(analyser);
+          analyser.connect(audioContext.destination);
+          
+          sourceNodeRef.current = source;
+          isConnectedRef.current = true;
+        }
+        
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        
+        analyserRef.current = analyser;
+        dataArrayRef.current = dataArray;
+        audioContextRef.current = audioContext;
+      } catch (error) {
+        console.error("Error setting up audio context:", error);
+      }
     }
     
     return () => {
-      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
-        audioContextRef.current.close();
-        audioContextRef.current = null;
-        analyserRef.current = null;
-        dataArrayRef.current = null;
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
       }
     };
   }, [audioElement]);
+
+  // Clean up when component unmounts
+  useEffect(() => {
+    return () => {
+      if (sourceNodeRef.current) {
+        sourceNodeRef.current.disconnect();
+      }
+      if (analyserRef.current) {
+        analyserRef.current.disconnect();
+      }
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close();
+      }
+      isConnectedRef.current = false;
+      sourceNodeRef.current = null;
+      analyserRef.current = null;
+      dataArrayRef.current = null;
+      audioContextRef.current = null;
+    };
+  }, []);
 
   const updateVisualizer = () => {
     if (!isPlaying || !analyserRef.current || !dataArrayRef.current) {
