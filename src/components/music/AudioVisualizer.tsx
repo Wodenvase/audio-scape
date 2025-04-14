@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 interface AudioVisualizerProps {
   isPlaying: boolean;
@@ -7,7 +8,8 @@ interface AudioVisualizerProps {
 }
 
 const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isPlaying, audioElement }) => {
-  const [barHeights, setBarHeights] = useState<number[]>(Array(12).fill(0.3));
+  const [barHeights, setBarHeights] = useState<number[]>(Array(20).fill(0.3));
+  const [bassLevel, setBassLevel] = useState<number>(0);
   const requestRef = useRef<number>();
   const analyserRef = useRef<AnalyserNode | null>(null);
   const dataArrayRef = useRef<Uint8Array | null>(null);
@@ -31,7 +33,7 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isPlaying, audioEleme
       try {
         const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
         const analyser = audioContext.createAnalyser();
-        analyser.fftSize = 64; // Must be a power of 2
+        analyser.fftSize = 256; // Increased for more detailed visualization
         
         // Only create a media element source if we haven't already
         if (!isConnectedRef.current) {
@@ -88,6 +90,7 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isPlaying, audioEleme
         Math.max(0.1, Math.min(0.5, 0.3 + (Math.random() * 0.1 - 0.05)))
       );
       setBarHeights(newHeights);
+      setBassLevel(0.2 + Math.random() * 0.1);
       requestRef.current = requestAnimationFrame(updateVisualizer);
       return;
     }
@@ -104,7 +107,13 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isPlaying, audioEleme
       return Math.max(0.1, Math.min(1, dataArrayRef.current!.at(index)! / 255));
     });
     
+    // Extract bass frequencies for background pulse effect
+    const bassFrequencies = dataArrayRef.current.slice(0, 5);
+    const bassAverage = bassFrequencies.reduce((sum, val) => sum + val, 0) / bassFrequencies.length;
+    const normalizedBass = Math.max(0.2, Math.min(1, bassAverage / 255));
+    
     setBarHeights(newHeights);
+    setBassLevel(normalizedBass);
     requestRef.current = requestAnimationFrame(updateVisualizer);
   };
 
@@ -119,19 +128,31 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ isPlaying, audioEleme
   }, [isPlaying]);
 
   return (
-    <div className="flex items-end h-full gap-[2px] justify-center w-full">
-      {barHeights.map((height, index) => (
-        <div
-          key={index}
-          className="w-1 bg-primary rounded-full transition-height duration-100"
-          style={{ 
-            height: `${height * 100}%`,
-            transform: `scaleY(${height})`,
-            transformOrigin: 'bottom',
-            transition: 'transform 0.1s ease-in-out' 
-          }}
-        ></div>
-      ))}
+    <div className="relative flex flex-col h-full w-full">
+      {/* Background pulse effect based on bass */}
+      <motion.div 
+        className="absolute inset-0 bg-primary/20 rounded-full filter blur-3xl"
+        style={{ 
+          scale: bassLevel,
+          opacity: bassLevel * 0.7
+        }}
+      />
+      
+      <div className="flex items-end h-full gap-[2px] justify-center w-full relative z-10">
+        {barHeights.map((height, index) => (
+          <motion.div
+            key={index}
+            className={`w-1 bg-primary rounded-full`}
+            style={{ 
+              height: `${height * 100}%`,
+              scaleY: height,
+              opacity: 0.7 + height * 0.3
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            layout
+          />
+        ))}
+      </div>
     </div>
   );
 };
