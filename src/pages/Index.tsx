@@ -57,7 +57,7 @@ const Index = () => {
             style={{ 
               x: mousePosition.x * -30,
               y: mousePosition.y * -30,
-              scale: isPlaying ? [1, 1.05, 1] : 1
+              scale: isPlaying ? 1.05 : 1
             }}
             animate={isPlaying ? { scale: [1, 1.05, 1] } : {}}
             transition={isPlaying ? { repeat: Infinity, duration: 2 } : {}}
@@ -68,7 +68,7 @@ const Index = () => {
             style={{ 
               x: mousePosition.x * 30,
               y: mousePosition.y * 30,
-              scale: isPlaying ? [1, 1.1, 1] : 1
+              scale: isPlaying ? 1.1 : 1
             }}
             animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
             transition={isPlaying ? { repeat: Infinity, duration: 2.5, delay: 0.5 } : {}}
@@ -79,7 +79,7 @@ const Index = () => {
             style={{ 
               x: mousePosition.x * 20,
               y: mousePosition.y * -20,
-              scale: isPlaying ? [1, 1.08, 1] : 1
+              scale: isPlaying ? 1.08 : 1
             }}
             animate={isPlaying ? { scale: [1, 1.08, 1] } : {}}
             transition={isPlaying ? { repeat: Infinity, duration: 3 } : {}}
