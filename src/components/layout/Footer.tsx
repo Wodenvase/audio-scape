@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="w-full bg-music-darker py-12 px-4 mt-20">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-primary text-lg font-bold mb-4">AudioScape</h3>
             <p className="text-sm text-gray-400">
@@ -31,7 +31,7 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-medium mb-4">Company</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/about" className="text-gray-400 hover:text-primary">About</Link></li>
+              <li><Link to="/docs/about" className="text-gray-400 hover:text-primary">About</Link></li>
               <li><Link to="/careers" className="text-gray-400 hover:text-primary">Careers</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-primary">Contact</Link></li>
             </ul>
@@ -40,27 +40,12 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-medium mb-4">Resources</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/help" className="text-gray-400 hover:text-primary">Help Center</Link></li>
+              <li><Link to="/docs/help" className="text-gray-400 hover:text-primary">Help Center</Link></li>
+              <li><Link to="/docs" className="text-gray-400 hover:text-primary">Documentation</Link></li>
+              <li><Link to="/docs/features" className="text-gray-400 hover:text-primary">Features Guide</Link></li>
               <li><Link to="/terms" className="text-gray-400 hover:text-primary">Terms of Use</Link></li>
               <li><Link to="/privacy" className="text-gray-400 hover:text-primary">Privacy Policy</Link></li>
             </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-white font-medium mb-4">Subscribe</h4>
-            <p className="text-sm text-gray-400 mb-2">
-              Get updates on new features and music.
-            </p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="bg-music-dark rounded-l-md px-4 py-2 w-full text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-              <button className="bg-primary text-white rounded-r-md px-4 py-2 text-sm">
-                Subscribe
-              </button>
-            </div>
           </div>
         </div>
         

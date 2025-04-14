@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Search, Music } from "lucide-react";
+import { Search, Music, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -71,6 +71,7 @@ const Navbar = () => {
           <Link to="/" className={`hover:text-primary transition-colors ${isActive('/')}`}>Home</Link>
           <Link to="/explore" className={`hover:text-primary transition-colors ${isActive('/explore')}`}>Explore</Link>
           <Link to="/playlists" className={`hover:text-primary transition-colors ${isActive('/playlists')}`}>Playlists</Link>
+          <Link to="/docs" className={`hover:text-primary transition-colors ${isActive('/docs')}`}>Docs</Link>
         </div>
         
         <div className="flex items-center gap-4">
@@ -93,6 +94,11 @@ const Navbar = () => {
           <Button variant="ghost" size="icon" className="rounded-full">
             <Music className="h-5 w-5" />
           </Button>
+          <Link to="/docs">
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <BookOpen className="h-5 w-5" />
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>
