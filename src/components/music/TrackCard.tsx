@@ -1,8 +1,14 @@
 
-import { Play, Pause, MoreHorizontal } from "lucide-react";
+import { Play, Pause, MoreHorizontal, ListPlus, Plus } from "lucide-react";
 import { Track, formatTime } from "@/data/musicData";
 import { useMusic } from "@/context/MusicContext";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface TrackCardProps {
   track: Track;
@@ -24,7 +30,9 @@ const TrackCard = ({
     isPlaying, 
     playTrack, 
     togglePlayPause,
-    addToQueue
+    addToQueue,
+    myPlaylists,
+    addToPlaylist
   } = useMusic();
   
   const isCurrentTrack = currentTrack?.id === track.id;
@@ -59,9 +67,33 @@ const TrackCard = ({
             )}
           </Button>
         </div>
-        <div className="mt-2">
-          <h3 className="font-medium truncate">{track.title}</h3>
-          <p className="text-xs text-gray-400 truncate">{track.artist}</p>
+        <div className="mt-2 flex justify-between items-start">
+          <div>
+            <h3 className="font-medium truncate">{track.title}</h3>
+            <p className="text-xs text-gray-400 truncate">{track.artist}</p>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-music-dark border-white/10">
+              <DropdownMenuItem onClick={() => addToQueue(track)}>
+                <ListPlus className="mr-2 h-4 w-4" />
+                Add to Queue
+              </DropdownMenuItem>
+              {myPlaylists.map(playlist => (
+                <DropdownMenuItem 
+                  key={playlist.id} 
+                  onClick={() => addToPlaylist(track, playlist.id)}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add to {playlist.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     );
@@ -85,7 +117,7 @@ const TrackCard = ({
             className="w-full h-full object-cover"
           />
           <div 
-            className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+            className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
             onClick={handlePlay}
           >
             {isCurrentTrack && isPlaying ? (
@@ -110,13 +142,32 @@ const TrackCard = ({
       <div className="flex items-center space-x-4">
         <span className="text-xs text-gray-400">{formatTime(track.duration)}</span>
         
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
-        >
-          <MoreHorizontal className="h-5 w-5" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-gray-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <MoreHorizontal className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 bg-music-dark border-white/10">
+            <DropdownMenuItem onClick={() => addToQueue(track)}>
+              <ListPlus className="mr-2 h-4 w-4" />
+              Add to Queue
+            </DropdownMenuItem>
+            {myPlaylists.map(playlist => (
+              <DropdownMenuItem 
+                key={playlist.id} 
+                onClick={() => addToPlaylist(track, playlist.id)}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add to {playlist.name}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

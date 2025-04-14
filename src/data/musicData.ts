@@ -1,4 +1,3 @@
-
 export interface Artist {
   id: string;
   name: string;
@@ -167,8 +166,8 @@ export const tracks: Track[] = [
     album: "Lunar Phases",
     albumId: "album1",
     coverImage: "https://images.unsplash.com/photo-1557672199-6e8c8b2b8fff?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-    duration: 241,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2022/01/27/audio_db4df97c0a.mp3?filename=electronic-future-beats-117997.mp3",
+    duration: 144,
     genre: "Electronic"
   },
   {
@@ -179,8 +178,8 @@ export const tracks: Track[] = [
     album: "Lunar Phases",
     albumId: "album1",
     coverImage: "https://images.unsplash.com/photo-1557672199-6e8c8b2b8fff?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-    duration: 317,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b0b7473b.mp3?filename=ambient-piano-logo-120305.mp3",
+    duration: 146,
     genre: "Ambient"
   },
   {
@@ -191,8 +190,8 @@ export const tracks: Track[] = [
     album: "Retrograde",
     albumId: "album2",
     coverImage: "https://images.unsplash.com/photo-1528148343865-51218c4a13e6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-    duration: 278,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2021/11/23/audio_cb15c17962.mp3?filename=ambient-dream-ver-2-114481.mp3",
+    duration: 132,
     genre: "Synthwave"
   },
   {
@@ -203,8 +202,8 @@ export const tracks: Track[] = [
     album: "Retrograde",
     albumId: "album2",
     coverImage: "https://images.unsplash.com/photo-1528148343865-51218c4a13e6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-    duration: 205,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2023/06/15/audio_368806ebcc.mp3?filename=retrowave-track-147482.mp3",
+    duration: 166,
     genre: "Synthwave"
   },
   {
@@ -215,8 +214,8 @@ export const tracks: Track[] = [
     album: "Late Night Sessions",
     albumId: "album3",
     coverImage: "https://images.unsplash.com/photo-1593359863503-f598684c806f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-    duration: 187,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2023/03/31/audio_43b6b09be0.mp3?filename=lofi-hip-hop-144426.mp3",
+    duration: 122,
     genre: "Jazz"
   },
   {
@@ -227,8 +226,8 @@ export const tracks: Track[] = [
     album: "Horizon",
     albumId: "album4",
     coverImage: "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-    duration: 215,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2022/01/16/audio_4906d60023.mp3?filename=cinematic-ambient-main-9708.mp3",
+    duration: 152,
     genre: "Pop"
   },
   {
@@ -239,8 +238,8 @@ export const tracks: Track[] = [
     album: "Particle Theory",
     albumId: "album5",
     coverImage: "https://images.unsplash.com/photo-1502277254272-c60d7a14d461?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
-    duration: 298,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2023/04/05/audio_6428a9cc18.mp3?filename=minimal-techno-144571.mp3",
+    duration: 137,
     genre: "Techno"
   },
   {
@@ -251,8 +250,8 @@ export const tracks: Track[] = [
     album: "Midnight Whispers",
     albumId: "album6",
     coverImage: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
-    duration: 262,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2023/06/08/audio_410b61a8ca.mp3?filename=smoothjazz-147148.mp3",
+    duration: 176,
     genre: "R&B"
   },
   {
@@ -263,8 +262,8 @@ export const tracks: Track[] = [
     album: "Aurora",
     albumId: "album7",
     coverImage: "https://images.unsplash.com/photo-1574155376612-bfa4ed8aabfd?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3",
-    duration: 324,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2022/04/27/audio_321ce759e2.mp3?filename=ambient-classical-guitar-144998.mp3",
+    duration: 198,
     genre: "Ambient"
   },
   {
@@ -275,8 +274,8 @@ export const tracks: Track[] = [
     album: "Digital Dreams",
     albumId: "album8",
     coverImage: "https://images.unsplash.com/photo-1561303009-3f571815e273?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
-    duration: 193,
+    audioSrc: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_270e8e6082.mp3?filename=electronic-rock-king-around-here-15045.mp3",
+    duration: 123,
     genre: "Electronic"
   }
 ];

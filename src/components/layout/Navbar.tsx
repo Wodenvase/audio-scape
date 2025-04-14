@@ -1,9 +1,44 @@
 
-import { Link } from "react-router-dom";
-import { Search, User, Bell } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Search, User, Bell, Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { useMusic } from "@/context/MusicContext";
+import { tracks } from "@/data/musicData";
 
 const Navbar = () => {
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { playTrack } = useMusic();
+  const location = useLocation();
+  
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+    if (showSearch) {
+      setSearchQuery("");
+    }
+  };
+  
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (searchQuery.trim()) {
+      const results = tracks.filter(track => 
+        track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        track.artist.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+      if (results.length > 0) {
+        playTrack(results[0]);
+      }
+    }
+  };
+  
+  const isActive = (path: string) => {
+    return location.pathname === path ? "text-primary" : "text-white";
+  };
+  
   return (
     <nav className="fixed top-0 left-0 w-full z-50 px-4 py-4 backdrop-blur-md bg-background/80 border-b border-white/10">
       <div className="container mx-auto flex items-center justify-between">
@@ -21,21 +56,30 @@ const Navbar = () => {
         </div>
         
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-          <Link to="/explore" className="hover:text-primary transition-colors">Explore</Link>
-          <Link to="/artists" className="hover:text-primary transition-colors">Artists</Link>
-          <Link to="/playlists" className="hover:text-primary transition-colors">Playlists</Link>
+          <Link to="/" className={`hover:text-primary transition-colors ${isActive('/')}`}>Home</Link>
+          <Link to="/explore" className={`hover:text-primary transition-colors ${isActive('/explore')}`}>Explore</Link>
+          <Link to="/playlists" className={`hover:text-primary transition-colors ${isActive('/playlists')}`}>Playlists</Link>
         </div>
         
         <div className="flex items-center gap-4">
+          {showSearch ? (
+            <form onSubmit={handleSearch} className="relative">
+              <Input
+                placeholder="Search songs..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 w-64 bg-white/5 border-white/10"
+                autoFocus
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            </form>
+          ) : (
+            <Button variant="ghost" size="icon" className="rounded-full" onClick={toggleSearch}>
+              <Search className="h-5 w-5" />
+            </Button>
+          )}
           <Button variant="ghost" size="icon" className="rounded-full">
-            <Search className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <Bell className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <User className="h-5 w-5" />
+            <Music className="h-5 w-5" />
           </Button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 
 import { createContext, useState, useContext, ReactNode, useRef, useEffect } from "react";
 import { Track, tracks } from "../data/musicData";
+import { useToast } from "@/components/ui/use-toast";
 
 interface MusicContextType {
   currentTrack: Track | null;
@@ -17,6 +18,16 @@ interface MusicContextType {
   nextTrack: () => void;
   previousTrack: () => void;
   addToQueue: (track: Track) => void;
+  myPlaylists: UserPlaylist[];
+  createPlaylist: (name: string) => void;
+  addToPlaylist: (track: Track, playlistId: string) => void;
+  removeFromPlaylist: (trackId: string, playlistId: string) => void;
+}
+
+export interface UserPlaylist {
+  id: string;
+  name: string;
+  tracks: Track[];
 }
 
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
@@ -28,6 +39,11 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [queue, setQueue] = useState<Track[]>([]);
+  const [myPlaylists, setMyPlaylists] = useState<UserPlaylist[]>([
+    { id: 'favorites', name: 'My Favorites', tracks: [] }
+  ]);
+  
+  const { toast } = useToast();
   
   // Create a single audio element ref that persists for the lifetime of the app
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -133,6 +149,61 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
   
   const addToQueue = (track: Track) => {
     setQueue([...queue, track]);
+    toast({
+      title: "Added to Queue",
+      description: `${track.title} by ${track.artist} added to queue`,
+    });
+  };
+  
+  const createPlaylist = (name: string) => {
+    const id = `playlist-${Date.now()}`;
+    setMyPlaylists([...myPlaylists, { id, name, tracks: [] }]);
+    toast({
+      title: "Playlist Created",
+      description: `${name} playlist has been created`,
+    });
+  };
+  
+  const addToPlaylist = (track: Track, playlistId: string) => {
+    setMyPlaylists(myPlaylists.map(playlist => {
+      if (playlist.id === playlistId) {
+        // Check if track is already in playlist
+        if (playlist.tracks.some(t => t.id === track.id)) {
+          toast({
+            title: "Already in Playlist",
+            description: `${track.title} is already in ${playlist.name}`,
+          });
+          return playlist;
+        }
+        
+        toast({
+          title: "Added to Playlist",
+          description: `${track.title} added to ${playlist.name}`,
+        });
+        return { ...playlist, tracks: [...playlist.tracks, track] };
+      }
+      return playlist;
+    }));
+  };
+  
+  const removeFromPlaylist = (trackId: string, playlistId: string) => {
+    const playlist = myPlaylists.find(p => p.id === playlistId);
+    if (!playlist) return;
+    
+    setMyPlaylists(myPlaylists.map(playlist => {
+      if (playlist.id === playlistId) {
+        return {
+          ...playlist, 
+          tracks: playlist.tracks.filter(track => track.id !== trackId)
+        };
+      }
+      return playlist;
+    }));
+    
+    toast({
+      title: "Removed from Playlist",
+      description: `Song removed from ${playlist.name}`,
+    });
   };
   
   const value = {
@@ -150,6 +221,10 @@ export const MusicProvider = ({ children }: { children: ReactNode }) => {
     nextTrack,
     previousTrack,
     addToQueue,
+    myPlaylists,
+    createPlaylist,
+    addToPlaylist,
+    removeFromPlaylist,
   };
   
   return <MusicContext.Provider value={value}>{children}</MusicContext.Provider>;
