@@ -4,13 +4,15 @@ import { useMusic } from "@/context/MusicContext";
 import { tracks } from "@/data/musicData";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Music, Sun, Moon, Heart, Zap, CloudRain } from "lucide-react";
+import { 
+  Music, Sun, Moon, Heart, Zap, CloudRain 
+} from "lucide-react";
 
 interface Mood {
   id: string;
   name: string;
   icon: React.ReactNode;
-  color: string;
+  gradient: string;
   genres: string[];
 }
 
@@ -18,36 +20,36 @@ const moods: Mood[] = [
   {
     id: "calm",
     name: "Calm",
-    icon: <Moon className="h-6 w-6" />,
-    color: "bg-blue-500",
+    icon: <Moon className="h-8 w-8 text-white" />,
+    gradient: "bg-gradient-to-br from-blue-400 to-indigo-600",
     genres: ["Ambient", "Lo-fi", "Jazz"]
   },
   {
     id: "energetic",
     name: "Energetic",
-    icon: <Zap className="h-6 w-6" />,
-    color: "bg-yellow-500",
+    icon: <Zap className="h-8 w-8 text-white" />,
+    gradient: "bg-gradient-to-br from-yellow-400 to-orange-600",
     genres: ["Electronic", "Dance", "Pop"]
   },
   {
     id: "happy",
     name: "Happy",
-    icon: <Sun className="h-6 w-6" />,
-    color: "bg-orange-500",
+    icon: <Sun className="h-8 w-8 text-white" />,
+    gradient: "bg-gradient-to-br from-green-400 to-teal-600",
     genres: ["Pop", "Synthwave"]
   },
   {
     id: "sad",
-    name: "Sad",
-    icon: <CloudRain className="h-6 w-6" />,
-    color: "bg-indigo-500",
+    name: "Melancholic",
+    icon: <CloudRain className="h-8 w-8 text-white" />,
+    gradient: "bg-gradient-to-br from-purple-400 to-pink-600",
     genres: ["R&B", "Soul"]
   },
   {
     id: "romantic",
-    name: "Romantic",
-    icon: <Heart className="h-6 w-6" />,
-    color: "bg-pink-500",
+    name: "Love",
+    icon: <Heart className="h-8 w-8 text-white" />,
+    gradient: "bg-gradient-to-br from-rose-400 to-red-600",
     genres: ["R&B", "Soul", "Jazz"]
   }
 ];
@@ -60,18 +62,16 @@ const MoodSelector = () => {
   const handleMoodSelect = (mood: Mood) => {
     setSelectedMood(mood.id);
     
-    // Find tracks matching the mood's genres
     const moodTracks = tracks.filter(track => 
       mood.genres.includes(track.genre)
     );
     
     if (moodTracks.length > 0) {
-      // Play a random track from the filtered list
       const randomTrack = moodTracks[Math.floor(Math.random() * moodTracks.length)];
       playTrack(randomTrack);
       
       toast({
-        title: `Playing ${mood.name} Music`,
+        title: `${mood.name} Vibes`,
         description: `Now playing: ${randomTrack.title} by ${randomTrack.artist}`,
         duration: 3000,
       });
@@ -86,24 +86,38 @@ const MoodSelector = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="text-center mb-10">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+      <div className="text-center mb-12">
         <Music className="h-16 w-16 mx-auto mb-4 text-primary" />
-        <h1 className="text-3xl font-bold mb-2">How are you feeling today?</h1>
-        <p className="text-gray-400">Select a mood to start listening</p>
+        <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white">
+          What's Your Mood?
+        </h1>
+        <p className="text-gray-300 text-lg">
+          Choose a vibe and let the music take you away
+        </p>
       </div>
       
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full max-w-xl">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-2xl">
         {moods.map((mood) => (
           <Button
             key={mood.id}
             onClick={() => handleMoodSelect(mood)}
-            className={`h-24 flex flex-col items-center justify-center gap-2 ${mood.color} hover:opacity-90 transition-all ${
-              selectedMood === mood.id ? "ring-4 ring-white/30" : ""
-            }`}
+            className={`
+              ${mood.gradient} 
+              h-32 md:h-40 
+              flex flex-col items-center justify-center 
+              gap-3 
+              rounded-xl 
+              shadow-lg 
+              hover:scale-105 
+              transition-transform 
+              ${selectedMood === mood.id ? "ring-4 ring-white/30" : ""}
+            `}
           >
             {mood.icon}
-            <span>{mood.name}</span>
+            <span className="text-white font-medium text-sm md:text-base">
+              {mood.name}
+            </span>
           </Button>
         ))}
       </div>
