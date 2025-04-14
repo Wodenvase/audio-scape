@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useMusic } from "@/context/MusicContext";
 import { tracks } from "@/data/musicData";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Music, Sun, Moon, Heart, Zap, CloudRain } from "lucide-react";
 
 interface Mood {
