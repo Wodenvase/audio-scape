@@ -2,6 +2,7 @@
 import MainLayout from "@/components/layout/MainLayout";
 import MoodSelector from "@/components/home/MoodSelector";
 import HeroSection from "@/components/home/HeroSection";
+import KeyFeatures from "@/components/home/KeyFeatures";
 import { 
   FeaturedArtistsSection, 
   NewReleasesSection, 
@@ -134,6 +135,15 @@ const Index = () => {
                 transition={{ duration: 0.5 }}
               >
                 <HeroSection />
+                
+                {/* Key Features Section */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <KeyFeatures />
+                </motion.div>
                 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
