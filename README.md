@@ -5,6 +5,16 @@
 
 A beautiful music exploration platform with interactive visualizations and personalized recommendations.
 
+## Team
+
+### Team Ambitians
+
+**Team Lead:** Dipanta Bhattacharyya
+- Ritvik Kumar
+- Navneet Agrawal
+- Vinayak Dev Mishra
+- Sahil Saxena
+
 ## Getting Started
 
 ### Prerequisites
