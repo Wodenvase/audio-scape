@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Music, Waveform, Sparkles, Users, Smartphone } from "lucide-react";
+import { Music, BarChart, Sparkles, Users, Smartphone } from "lucide-react";
 import GlassCard from "@/components/ui/glass-card";
 
 interface FeatureItem {
@@ -12,7 +12,7 @@ interface FeatureItem {
 const KeyFeatures = () => {
   const features: FeatureItem[] = [
     {
-      icon: <Waveform className="h-8 w-8 text-primary" />,
+      icon: <BarChart className="h-8 w-8 text-primary" />,
       title: "Audio Visualization System",
       description: "Experience music in a new dimension with our real-time audio visualizations that respond to every beat and melody."
     },
