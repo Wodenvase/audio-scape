@@ -1,29 +1,43 @@
+# 🎧 AudioScape – Mood-Based Music Explorer
 
-# AudioScape Music Explorer
+**AudioScape** is an immersive music discovery platform that lets users explore and listen to music based on how they feel. Featuring a stunning visual interface, audio-reactive elements, mood-driven recommendations, and a friends-based discovery page, AudioScape transforms traditional music listening into an emotionally-driven experience.
 
-## Project Overview
+---
 
-A beautiful music exploration platform with interactive visualizations and personalized recommendations.
+## 🌟 Key Features
 
-## Team
+- 🎼 **Mood-Based Music Selection** – Users select from emotional moods like "Calm", "Energetic", or "Melancholy" to begin curated playback experiences.
+- 🌈 **Real-Time Audio Visualizer** – A smooth, animated visualizer that reacts dynamically to the beat of the music.
+- 🧊 **Glassmorphism UI** – Elegant, modern design with frosted glass cards, gradients, and fluid transitions.
+- 🫂 **Friends Page** – Users can add friends and explore their mood and listening habits in a visual, simplified interface.
+- 🔐 **Authentication & Persistence** – Secure login system using Supabase to store user data, preferences, and mood history.
+- 📱 **Mobile-First, Responsive Design** – Designed to look and feel great on all screen sizes.
 
-### Team Ambitians
+---
 
-**Team Lead:** Dipanta Bhattacharyya
-- Ritvik Kumar
-- Navneet Agrawal
-- Vinayak Dev Mishra
-- Sahil Saxena
+## 👥 Team Ambitians
 
-## Getting Started
+- 👨‍💼 **Team Lead**:
+-  Dipanta Bhattacharyya  
+- 💻 Ritvik Kumar  
+- 💻 Navneet Agrawal  
+- 💻 Vinayak Dev Mishra  
+- 💻 Sahil Saxena  
 
-### Prerequisites
-- Node.js
-- npm
+---
 
-### Installation
+## 🚀 Getting Started
 
-```sh
+Follow these steps to run AudioScape locally on your development environment.
+
+### ✅ Prerequisites
+
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
+
+### 📦 Installation
+
+```bash
 # Clone the repository
 git clone <your-repository-url>
 
@@ -35,23 +49,3 @@ npm install
 
 # Start the development server
 npm run dev
-```
-
-## Technologies Used
-- Vite
-- TypeScript
-- React
-- Tailwind CSS
-- Shadcn UI
-
-## Deployment
-
-Deploy your application using your preferred hosting platform.
-
-## Contributing
-
-Please read [CONTRIBUTING.md] for details on our code of conduct and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License.
